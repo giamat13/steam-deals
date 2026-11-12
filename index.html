@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#101923">
+  <title>PC Deals — Steam + Epic Games</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0b121a;--panel:#121e2a;--panel2:#182838;--line:#26394a;--text:#edf4fa;--muted:#9db0c0;--blue:#66c0f4;--green:#a4d007;--red:#ff6b6b;--radius:16px}
+    *{box-sizing:border-box}
+    body{margin:0;background:radial-gradient(ellipse at 50% -20%,#1d3b52 0%,transparent 55%),var(--bg);color:var(--text);font-family:Arial,"Segoe UI",sans-serif;min-height:100vh}
+    button,input,select{font:inherit}
+    .wrap{max-width:1420px;margin:auto;padding:26px 22px 50px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:25px;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:13px}
+    .logo{width:49px;height:49px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#2c82b7,#17415f);box-shadow:0 8px 28px #0005;font-size:25px}
+    h1{margin:0;font-size:clamp(25px,4vw,36px);letter-spacing:-.7px}
+    .subtitle{color:var(--muted);font-size:14px;margin-top:5px}
+    .head-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .btn{border:1px solid #3d6782;background:#1e5272;color:#fff;padding:11px 16px;border-radius:11px;cursor:pointer;font-weight:700;transition:.15s}
+    .btn:hover{filter:brightness(1.14);transform:translateY(-1px)}
+    .btn:disabled{opacity:.55;cursor:wait;transform:none}
+    .btn.secondary{background:#1a2b3a;border-color:var(--line);color:#d8e6f1}
+    .status{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;min-height:24px}
+    .dot{width:8px;height:8px;border-radius:50%;background:#8294a2;display:inline-block}
+    .dot.live{background:#78c850;box-shadow:0 0 10px #78c85088}
+    .dot.loading{background:#e8b34b;animation:pulse 1s infinite}
+    .dot.error{background:#ff6868}
+    @keyframes pulse{50%{opacity:.3}}
+    .hero{background:linear-gradient(112deg,#173a51,#1b2b40 60%,#253048);border:1px solid #31516a;border-radius:20px;padding:22px 24px;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+    .hero h2{margin:0 0 7px;font-size:23px}
+    .hero p{margin:0;color:#c3d4df;line-height:1.55}
+    .hero-stat{text-align:left;min-width:125px}
+    .hero-stat strong{font-size:34px;color:var(--green);display:block}
+    .hero-stat span{font-size:12px;color:#c3d4df}
+    .event-panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:17px 18px;margin-bottom:18px}
+    .event-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:13px;flex-wrap:wrap}
+    .event-title h2{font-size:18px;margin:0}
+    .event-title a{font-size:12px;color:#9ac9e5;text-decoration:none}
+    .event-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+    .event-card{background:#0e1924;border:1px solid #2d4254;border-radius:12px;padding:13px 14px}
+    .event-card.next{border-color:#669bba;background:linear-gradient(140deg,#183448,#101d29)}
+    .event-name{font-weight:800;margin-bottom:6px}
+    .event-date{font-size:13px;color:#d2e1eb}
+    .event-countdown{font-size:12px;color:#b7d87c;margin-top:7px}
+    .event-note{color:var(--muted);font-size:12px;margin-top:10px}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+    .stat{padding:17px 18px;background:var(--panel);border:1px solid var(--line);border-radius:14px}
+    .stat .k{font-size:12px;color:var(--muted);margin-bottom:7px}
+    .stat .v{font-size:25px;font-weight:800}
+    .filters{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);padding:13px;border-radius:15px;margin-bottom:16px}
+    .search{flex:1;min-width:190px;position:relative}
+    .search input{width:100%;background:#0c1721;border:1px solid #31485b;color:var(--text);border-radius:10px;padding:11px 38px 11px 12px;outline:none}
+    .search input:focus,select:focus{border-color:var(--blue)}
+    .search span{position:absolute;right:12px;top:10px;color:#829aaa}
+    select{background:#0c1721;border:1px solid #31485b;border-radius:10px;color:var(--text);padding:11px 12px;min-width:130px;outline:none}
+    .filter-label{font-size:12px;color:var(--muted);margin-inline-start:4px}
+    .chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:15px}
+    .chip{border:1px solid #31485b;background:#132231;color:#c6d7e4;border-radius:30px;padding:8px 13px;cursor:pointer;font-size:13px}
+    .chip.active{background:#245b79;border-color:#4e9bc7;color:#fff}
+    .section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:18px 2px 12px}
+    .section-head h2{font-size:20px;margin:0}
+    .count{color:var(--muted);font-size:13px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:15px}
+    .card{background:linear-gradient(155deg,#182a39,#101b27);border:1px solid var(--line);border-radius:15px;overflow:hidden;min-width:0;transition:.18s;display:flex;flex-direction:column}
+    .card:hover{transform:translateY(-3px);border-color:#4c7894;box-shadow:0 12px 28px #0004}
+    .cover{aspect-ratio:460/215;background:#203344;position:relative;overflow:hidden}
+    .cover img{width:100%;height:100%;object-fit:cover;display:block}
+    .discount{position:absolute;top:10px;right:10px;background:var(--green);color:#14200a;padding:7px 10px;font-weight:900;border-radius:8px;font-size:17px;box-shadow:0 3px 12px #0005}
+    .card-body{padding:14px;display:flex;flex-direction:column;flex:1}
+    .game-title{font-weight:800;font-size:16px;line-height:1.4;min-height:45px;margin-bottom:13px}
+    .prices{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-top:auto}
+    .old{color:#8093a2;text-decoration:line-through;font-size:13px}
+    .new{font-size:21px;font-weight:900;color:#d8edb5}
+    .save{color:#b6d77b;font-size:12px;margin-top:5px}
+    .ends{color:var(--muted);font-size:12px;margin-top:10px;min-height:16px}.history-link{display:block;margin-top:7px;color:#8bc9ef;text-decoration:none;font-size:12px}.history-link:hover{text-decoration:underline}.load-more-wrap{text-align:center;margin:20px 0}.load-more-wrap .btn{min-width:220px}.catalog-note{color:var(--muted);font-size:12px;margin-top:8px;line-height:1.5}.discount.none{background:#344b5d;color:#e7f0f6;font-size:13px}
+    .card-link{margin-top:13px;display:block;text-align:center;text-decoration:none;background:#234c66;color:#eaf6fd;border:1px solid #346986;border-radius:9px;padding:10px;font-weight:700}
+    .card-link:hover{background:#2e6689}
+    .empty,.message{grid-column:1/-1;text-align:center;background:var(--panel);border:1px dashed #385166;color:var(--muted);border-radius:15px;padding:34px 20px;line-height:1.6}
+    .message strong{color:var(--text)}
+    .footer{color:#8194a4;text-align:center;font-size:12px;line-height:1.6;margin-top:27px}
+    .footer a{color:#9ac9e5}
+    @media(max-width:650px){.wrap{padding:18px 13px 35px}.stats{grid-template-columns:1fr}.stat{padding:13px 15px}.stat .v{font-size:22px}.hero{padding:18px}.hero-stat{text-align:right}.grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}.filters>*{width:100%}.search{flex:unset}.filters select{width:100%}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">🎮</div>
+        <div>
+          <h1>PC Deals</h1>
+          <div class="subtitle">Steam + Epic Games · מחירים והנחות בזמן אמת</div>
+        </div>
+      </div>
+      <div class="head-actions">
+        <label class="status" for="storeSelect">חנות</label>
+        <select id="storeSelect" aria-label="חנות">
+          <option value="steam" selected>Steam</option>
+          <option value="epic">Epic Games</option>
+          <option value="both">Steam + Epic Games</option>
+        </select>
+        <label class="status" for="country">אזור מחירים</label>
+        <select id="country" aria-label="אזור מחירים">
+          <option value="il" selected>ישראל</option>
+          <option value="us">ארצות הברית</option>
+          <option value="gb">בריטניה</option>
+          <option value="de">גרמניה</option>
+        </select>
+        <button class="btn" id="refreshBtn">⟳ רענן עכשיו</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h2>משחקים מ-Steam ומ-Epic Games</h2>
+        <p>בחר חנות אחת או הצג את שתיהן. המחירים וההנחות נטענים ישירות ממקורות החנויות, בלי רשימת משחקים קשיחה בקוד.</p>
+      </div>
+      <div class="hero-stat"><strong id="bestDiscount">—</strong><span>ההנחה הגבוהה ביותר בנתונים שנטענו</span></div>
+    </section>
+
+    <section class="event-panel" aria-label="מועדי מבצעי Steam הרשמיים">
+      <div class="event-title"><h2>מועדי מבצעים קרובים</h2><a href="https://partner.steamgames.com/doc/marketing/upcoming_events" target="_blank" rel="noopener noreferrer">לוח האירועים של Steam ↗</a> <a href="https://store.epicgames.com/sales-and-specials" target="_blank" rel="noopener noreferrer">מבצעי Epic Games ↗</a></div>
+      <div class="event-grid" id="eventGrid"><div class="event-card">בודק את לוח האירועים הרשמי של Steam…</div></div>
+      <div class="event-note">Steam מפרסמת מועדים למבצעים עונתיים. Epic מעדכנת Deals of the Week באופן שבועי. אף חנות אינה מבטיחה מראש שמשחק מסוים ישתתף או באיזה אחוז הנחה.</div>
+    </section>
+
+    <div class="status" id="status" role="status" aria-live="polite"><span class="dot"></span><span>ממתין לטעינת נתונים…</span></div>
+
+    <section class="stats" aria-label="סיכום מבצעים">
+      <div class="stat"><div class="k">משחקים שנטענו מהחנויות</div><div class="v" id="totalDeals">—</div></div>
+      <div class="stat"><div class="k">משחקים בהנחה עכשיו</div><div class="v" id="onSaleCount">—</div></div>
+      <div class="stat"><div class="k">משחקים ללא הנחה</div><div class="v" id="regularCount">—</div></div>
+    </section>
+
+    <section class="filters" aria-label="חיפוש וסינון משחקים">
+      <div class="search"><span>⌕</span><input id="searchInput" type="search" placeholder="חיפוש משחקים בחנות שנבחרה…" autocomplete="off"></div>
+      <select id="minDiscount" aria-label="הנחה מינימלית">
+        <option value="0">כל המשחקים</option><option value="10">10% הנחה ומעלה</option><option value="25">25% הנחה ומעלה</option><option value="50">50% הנחה ומעלה</option><option value="75">75% הנחה ומעלה</option><option value="90">90% הנחה ומעלה</option>
+      </select>
+      <select id="sortBy" aria-label="סידור תוצאות">
+        <option value="relevance">רלוונטיות לחיפוש</option><option value="discount">ההנחה הגבוהה ביותר</option><option value="price">המחיר הנמוך ביותר</option><option value="name">שם המשחק</option>
+      </select>
+      <select id="refreshRate" aria-label="תדירות עדכון">
+        <option value="5">עדכון כל 5 דקות</option><option value="10" selected>עדכון כל 10 דקות</option><option value="30">עדכון כל 30 דקות</option><option value="60">עדכון כל שעה</option>
+      </select>
+    </section>
+
+    <nav class="chips" aria-label="קיצורי סינון">
+      <button class="chip active" data-filter="all">כל המשחקים</button>
+      <button class="chip" data-filter="sale">בהנחה עכשיו</button>
+      <button class="chip" data-filter="regular">ללא הנחה</button>
+    </nav>
+
+    <div class="section-head">
+      <h2>קטלוג משחקים</h2>
+      <div class="count" id="visibleCount">מוצגות 0 תוצאות</div>
+    </div>
+    <section class="grid" id="dealsGrid" aria-live="polite">
+      <div class="message"><strong>מתחבר ל-Steam…</strong><br>טוען את המשחקים הראשונים מתוך הקטלוג.</div>
+    </section>
+    <div class="load-more-wrap" id="loadMoreWrap"><button class="btn secondary" id="loadMoreBtn" type="button">טען עוד 50 משחקים</button><div class="catalog-note" id="catalogProgress">המשחקים נטענים בהדרגה לפי עמודים מהחנות.</div></div>
+
+    <footer class="footer">
+      נתוני Steam: <a href="https://store.steampowered.com/" target="_blank" rel="noopener noreferrer">Steam Store</a>. נתוני Epic: <a href="https://store.epicgames.com/sales-and-specials" target="_blank" rel="noopener noreferrer">Epic Games Store</a> ו-<a href="https://docs.egdata.app/docs" target="_blank" rel="noopener noreferrer">EGDATA API</a>. לוח מבצעים: <a href="https://savespawn.com/sales.ics" target="_blank" rel="noopener noreferrer">לוח חיצוני שמתעדכן</a> לצד לוחות החנויות.<br>
+      תאריכי המבצעים הם חלונות כלליים של החנויות; הם אינם מבטיחים שמשחק מסוים ישתתף או מה יהיה אחוז ההנחה. האתר אינו קשור ל-Valve, ל-Steam, ל-Epic Games או ל-EGDATA.
+    </footer>
+  </main>
+
+  <script>
+    'use strict';
+    // Live game names and prices are fetched from Steam and Epic Games APIs. No catalogue is embedded in this file.
+    const STEAM_SEARCH = 'https://store.steampowered.com/search/results/';
+    const STEAM_EVENTS = 'https://partner.steamgames.com/doc/marketing/upcoming_events?l=english';
+    const EPIC_API = 'https://api.egdata.app';
+    const PROXIES = [
+      url => 'https://proxy.cors.dev/' + url,
+      url => 'https://corsproxy.io/?url=' + encodeURIComponent(url),
+      url => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url)
+    ];
+    const PAGE_SIZE = 50;
+    const $ = id => document.getElementById(id);
+    let allGames = [];
+    let nextStart = 0;
+    let totalGames = null;
+    let epicPage = 1;
+    let epicTotal = null;
+    let activeFilter = 'all';
+    let activeQuery = '';
+    let quickDiscount = 0;
+    let timer = null;
+    let isLoading = false;
+    let requestVersion = 0;
+    let searchDebounce = null;
+
+    function setStatus(message, mode='idle') {
+      const dotClass = mode === 'loading' ? 'loading' : mode === 'live' ? 'live' : mode === 'error' ? 'error' : '';
+      $('status').innerHTML = `<span class="dot ${dotClass}"></span><span>${escapeHtml(message)}</span>`;
+    }
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    function cleanText(node) { return node ? node.textContent.replace(/\s+/g,' ').trim() : ''; }
+    function numberFromText(value) {
+      const m = String(value || '').replace(/−/g,'-').match(/-?\d+(?:[.,]\d+)?/);
+      return m ? Number(m[0].replace(',','.')) : 0;
+    }
+    function extractAppId(url='') {
+      const m = String(url).match(/\/app\/(\d+)/i);
+      return m ? m[1] : '';
+    }
+    async function fetchTextThroughProxy(targetUrl, validate = text => Boolean(text)) {
+      let lastError;
+      for (const makeProxyUrl of PROXIES) {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 22000);
+        try {
+          const response = await fetch(makeProxyUrl(targetUrl), {signal:controller.signal, cache:'no-store'});
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const text = await response.text();
+          if (!validate(text)) throw new Error('המתווך החזיר תשובה בפורמט לא צפוי');
+          return text;
+        } catch (error) { lastError = error; }
+        finally { clearTimeout(timeout); }
+      }
+      throw new Error(lastError?.name === 'AbortError' ? 'החיבור ל-Steam ארך יותר מדי' : (lastError?.message || 'לא ניתן להתחבר למקור הנתונים'));
+    }
+    async function fetchJson(targetUrl) {
+      return fetchJsonRequest(targetUrl,'GET',null);
+    }
+    async function fetchJsonRequest(targetUrl, method='GET', body=null) {
+      const init={method,cache:'no-store',headers:{'Accept':'application/json'}};
+      if(body!==null){init.headers['Content-Type']='application/json';init.body=JSON.stringify(body);}
+      let lastError;
+      // Try the public API directly first (some APIs explicitly allow browser CORS).
+      try {
+        const response=await fetch(targetUrl,init);
+        if(!response.ok) throw new Error(`HTTP ${response.status}`);
+        return await response.json();
+      } catch(error) { lastError=error; }
+      // Fallback to CORS relays. POST forwarding depends on the relay's current policy.
+      for(const makeProxyUrl of PROXIES){
+        const controller=new AbortController(); const timeout=setTimeout(()=>controller.abort(),22000);
+        try{
+          const response=await fetch(makeProxyUrl(targetUrl),{...init,signal:controller.signal});
+          if(!response.ok) throw new Error(`HTTP ${response.status}`);
+          return await response.json();
+        }catch(error){lastError=error;}finally{clearTimeout(timeout);}
+      }
+      throw new Error(lastError?.message||'לא ניתן להתחבר למקור הנתונים');
+    }
+    function parseSearchHtml(html) {
+      const doc = new DOMParser().parseFromString(html || '', 'text/html');
+      const rows = [...doc.querySelectorAll('a.search_result_row, .search_result_row')];
+      const result = [];
+      for (const row of rows) {
+        const href = row.getAttribute('href') || row.querySelector('a[href]')?.getAttribute('href') || '';
+        const id = row.getAttribute('data-ds-appid')?.split(',')[0] || extractAppId(href);
+        const title = cleanText(row.querySelector('.title')) || row.getAttribute('data-ds-title') || '';
+        if (!id || !title) continue;
+        const discount = Math.abs(numberFromText(cleanText(row.querySelector('.discount_pct'))));
+        const oldPrice = cleanText(row.querySelector('.discount_original_price'));
+        const finalPrice = cleanText(row.querySelector('.discount_final_price'));
+        const priceNode = row.querySelector('.search_price');
+        const normalPrice = cleanText(priceNode);
+        const newPrice = finalPrice || normalPrice || 'מחיר לא זמין';
+        const image = row.querySelector('.search_capsule img')?.getAttribute('src') || row.querySelector('img')?.getAttribute('src') || '';
+        result.push({
+          id:String(id), store:'steam', title, discount, oldPrice, newPrice, image,
+          url:`https://store.steampowered.com/app/${id}/`,
+          historyUrl:`https://steamdb.info/app/${id}/`,
+          endsAt:null, priceValue:numberFromText(newPrice)
+        });
+      }
+      return result;
+    }
+    async function getGamesPage(country, query, start) {
+      const params = new URLSearchParams({
+        // Steam's search endpoint expects `term`, not `query`.
+        // `query` is silently ignored by the endpoint, which caused unrelated
+        // games (often sorted by discount) to appear for every search.
+        term:query || '', start:String(start), count:String(PAGE_SIZE), category1:'998',
+        sort_by:'Relevance', hidef2p:'0', json:'1', cc:country, l:'english',
+        infinite:'1', ignore_preferences:'1'
+      });
+      const data = await fetchJson(`${STEAM_SEARCH}?${params.toString()}&_=${Date.now()}`);
+      const html = data.results_html || data.resultsHTML || data.html || '';
+      let items = parseSearchHtml(html);
+      if (!items.length && Array.isArray(data.items)) {
+        items = data.items.map(x => {
+          const id=String(x.id || x.appid || '');
+          const discount=Number(x.discount_percent || x.discount || 0);
+          return {id,store:'steam',title:x.name || x.title || 'משחק ללא שם',discount,oldPrice:x.original_price_text || '',newPrice:x.final_price_text || x.price || 'מחיר לא זמין',image:x.header_image || x.logo || '',url:`https://store.steampowered.com/app/${id}/`,historyUrl:`https://steamdb.info/app/${id}/`,priceValue:Number(x.final_price || 0)};
+        }).filter(x=>x.id);
+      }
+      return {items,total:Number(data.total_count ?? data.total ?? NaN)};
+    }
+    function epicCurrency(value, currency='USD') {
+      if(value===null || value===undefined || !Number.isFinite(Number(value))) return 'מחיר לא זמין';
+      try{return new Intl.NumberFormat('he-IL',{style:'currency',currency,maximumFractionDigits:2}).format(Number(value)/100);}
+      catch{return `${(Number(value)/100).toFixed(2)} ${currency}`;}
+    }
+    function epicRows(data) {
+      const candidates=[data?.elements,data?.results,data?.offers,data?.items,data?.data?.elements,data?.data?.results,data?.data?.offers,data?.data?.items,data?.hits?.hits,data?.data?.hits?.hits];
+      for(const value of candidates) if(Array.isArray(value)) return value.map(x=>x?._source||x);
+      return [];
+    }
+    function normalizeEpicOffer(raw) {
+      const id=String(raw.id||raw.offerId||raw.offer_id||'');
+      if(!id) return null;
+      const priceRecord=raw.price?.price || raw.currentPrice?.price || raw.price || raw.prices?.IL || raw.prices?.il || {};
+      const currency=priceRecord.currencyCode||raw.price?.currencyCode||'USD';
+      const original=Number(priceRecord.originalPrice ?? priceRecord.original_price ?? 0);
+      const final=Number(priceRecord.discountPrice ?? priceRecord.discount_price ?? original);
+      const discount=Number(priceRecord.discount ?? priceRecord.discountPercent ?? raw.discountPercent ?? 0)||0;
+      const images=Array.isArray(raw.keyImages)?raw.keyImages:[];
+      const image=(images.find(x=>/DieselStoreFrontWide|OfferImageWide|Thumbnail|DieselStoreFrontTall/i.test(x.type||''))||images[0]||{}).url||raw.image||'';
+      const slug=raw.urlSlug||raw.productSlug||raw.offerMappings?.[0]?.pageSlug||raw.offerMappings?.[0]?.slug||'';
+      const url=raw.url|| (slug?`https://store.epicgames.com/en-US/p/${slug}`:`https://store.epicgames.com/en-US/browse?q=${encodeURIComponent(raw.title||'')}`);
+      return {id,store:'epic',title:raw.title||raw.name||'משחק ללא שם',discount,oldPrice:original>final?epicCurrency(original,currency):'',newPrice:epicCurrency(final,currency),image,url,historyUrl:`${EPIC_API}/offers/${encodeURIComponent(id)}/price-history?country=${encodeURIComponent($('country').value.toUpperCase())}`,priceValue:final/100,currencyCode:currency};
+    }
+    async function getEpicGamesPage(country, query, page) {
+      const region=String(country||'il').toUpperCase();
+      const url=`${EPIC_API}/search/v2/search?country=${encodeURIComponent(region)}&locale=en-US`;
+      const body={offerType:'BASE_GAME',page,limit:PAGE_SIZE};
+      if(query) body.title=query;
+      const data=await fetchJsonRequest(url,'POST',body);
+      const rows=epicRows(data).map(normalizeEpicOffer).filter(Boolean);
+      const total=Number(data.total??data.meta?.total??data.meta?.result?.total??data.hits?.total?.value??data.data?.total??NaN);
+      return {items:rows,total};
+    }
+    async function getEpicCatalogPage(country, page) {
+      const params=new URLSearchParams({country:String(country||'il').toUpperCase(),locale:'en-US',page:String(page),limit:String(PAGE_SIZE)});
+      const data=await fetchJson(`${EPIC_API}/offers?${params.toString()}`);
+      const rows=epicRows(data).filter(x=>!x.offerType||x.offerType==='BASE_GAME').map(normalizeEpicOffer).filter(Boolean);
+      return {items:rows,total:Number(data.total??data.meta?.total??NaN)};
+    }
+    async function fetchEpicPage(country, query, page) {
+      if(query) return getEpicGamesPage(country,query,page);
+      return getEpicCatalogPage(country,page);
+    }
+    function activeStores(){const v=$('storeSelect').value;return v==='both'?['steam','epic']:[v];}
+    function isStoreFinished(store){
+      if(store==='steam') return Number.isFinite(totalGames)&&nextStart>=totalGames;
+      return Number.isFinite(epicTotal)&&(epicPage-1)*PAGE_SIZE>=epicTotal;
+    }
+    function storesFinished(){return activeStores().every(isStoreFinished);}
+    function mergeUnique(target, incoming){const seen=new Set(target.map(g=>`${g.store}:${g.id}`));for(const g of incoming)if(!seen.has(`${g.store}:${g.id}`)){target.push(g);seen.add(`${g.store}:${g.id}`);}}
+    function formatDate(date){return date.toLocaleDateString('he-IL',{day:'numeric',month:'long',year:'numeric'});}
+    function render() {
+      const min = Math.max(Number($('minDiscount').value || 0), quickDiscount);
+      const sort = $('sortBy').value;
+      let list = allGames.filter(game => {
+        if (game.discount < min) return false;
+        if (activeFilter === 'sale' && game.discount <= 0) return false;
+        if (activeFilter === 'regular' && game.discount > 0) return false;
+        return true;
+      });
+      if (sort === 'relevance') { if(activeQuery){ /* preserve the source's search relevance order */ } else list.sort((a,b)=>b.discount-a.discount || a.priceValue-b.priceValue); }
+      if (sort === 'discount') list.sort((a,b)=>b.discount-a.discount || a.priceValue-b.priceValue);
+      if (sort === 'price') list.sort((a,b)=>(a.priceValue||Infinity)-(b.priceValue||Infinity));
+      if (sort === 'name') list.sort((a,b)=>a.title.localeCompare(b.title,'he'));
+      $('visibleCount').textContent = `מוצגות ${list.length.toLocaleString('he-IL')} מתוך ${allGames.length.toLocaleString('he-IL')} משחקים שנטענו`;
+      if (!list.length) {
+        $('dealsGrid').innerHTML = '<div class="empty">לא נמצאו משחקים בסינון הזה. אפשר לטעון עוד תוצאות או לשנות את הסינון.</div>';
+      } else {
+        $('dealsGrid').innerHTML = list.map(game => `
+          <article class="card">
+            <div class="cover">${game.image ? `<img loading="lazy" src="${escapeHtml(game.image)}" alt="${escapeHtml(game.title)}" onerror="this.style.display='none'">` : ''}${game.discount>0 ? `<span class="discount">-${Math.round(game.discount)}%</span>` : '<span class="discount none">ללא הנחה</span>'}</div>
+            <div class="card-body">
+              <div class="game-title">${escapeHtml(game.title)} <span style="font-size:10px;color:#9db0c0">${game.store==='epic'?'EPIC GAMES':'STEAM'}</span></div>
+              <div class="prices">${game.oldPrice ? `<span class="old">${escapeHtml(game.oldPrice)}</span>` : ''}<span class="new">${escapeHtml(game.newPrice)}</span></div>
+              ${game.discount>0 ? `<div class="save">חיסכון של ${Math.round(game.discount)}%</div>` : '<div class="save">המחיר הרגיל בחנות כרגע</div>'}
+              <div class="ends">${escapeHtml(game.endsAt ? 'המבצע מסתיים: '+game.endsAt.toLocaleString('he-IL') : (game.discount>0 ? 'מועד סיום ההנחה לא סופק על ידי תוצאת החיפוש' : 'אין הנחה פעילה בחנות הזו כרגע'))}</div>
+              <a class="history-link" href="${escapeHtml(game.historyUrl)}" target="_blank" rel="noopener noreferrer">היסטוריית מחירים ↗</a>
+              <a class="card-link" href="${escapeHtml(game.url)}" target="_blank" rel="noopener noreferrer">פתיחה ב-${game.store==='epic'?'Epic Games':'Steam'} ↗</a>
+            </div>
+          </article>`).join('');
+      }
+      updateStats();
+      updateLoadMore();
+    }
+    function updateStats() {
+      $('totalDeals').textContent = allGames.length.toLocaleString('he-IL');
+      $('onSaleCount').textContent = allGames.filter(x=>x.discount>0).length.toLocaleString('he-IL');
+      $('regularCount').textContent = allGames.filter(x=>x.discount<=0).length.toLocaleString('he-IL');
+      const best = allGames.reduce((max, game) => Math.max(max, Number(game.discount) || 0), 0);
+      $('bestDiscount').textContent = best > 0 ? `${best}%` : '—';
+    }
+    function updateLoadMore() {
+      const done=storesFinished();
+      $('loadMoreWrap').style.display=done&&allGames.length?'none':'block';
+      $('loadMoreBtn').disabled=isLoading||done;
+      $('loadMoreBtn').textContent=isLoading?'טוען משחקים…':(done?'כל התוצאות נטענו':'טען עוד 50 משחקים');
+      const storeText=activeStores().join(' + ').toUpperCase();
+      const totals=[];
+      if(activeStores().includes('steam')) totals.push(Number.isFinite(totalGames)?`Steam: ${totalGames.toLocaleString('he-IL')}`:'Steam: עוד לא ידוע');
+      if(activeStores().includes('epic')) totals.push(Number.isFinite(epicTotal)?`Epic: ${epicTotal.toLocaleString('he-IL')}`:'Epic: עוד לא ידוע');
+      $('catalogProgress').textContent=`${storeText} · נטענו ${allGames.length.toLocaleString('he-IL')} משחקים · ${totals.join(' · ')}. הנתונים נטענים בהדרגה.`;
+    }
+    async function loadInitial(reset=true) {
+      const version=++requestVersion;
+      const country=$('country').value;
+      activeQuery=$('searchInput').value.trim();
+      const stores=activeStores();
+      isLoading=true;
+      if(reset){allGames=[];nextStart=0;totalGames=null;epicPage=1;epicTotal=null;
+        $('dealsGrid').innerHTML=activeQuery?`<div class="message">מחפש את <strong>${escapeHtml(activeQuery)}</strong> ב-${stores.join(' + ')}…</div>`:'<div class="message">טוען את קטלוג המשחקים…</div>';
+      }
+      $('loadMoreBtn').disabled=true;$('loadMoreBtn').textContent='טוען…';
+      setStatus(activeQuery?`מחפש '${activeQuery}' ב-${stores.join(' + ')}…`:`טוען קטלוג ${stores.join(' + ')}…`,'loading');
+      try{
+        const tasks=stores.map(store=>store==='steam'?getGamesPage(country,activeQuery,0):fetchEpicPage(country,activeQuery,1));
+        const settled=await Promise.allSettled(tasks);
+        if(version!==requestVersion)return;
+        let failures=[];
+        settled.forEach((result,index)=>{
+          const store=stores[index];
+          if(result.status==='rejected'){failures.push(`${store}: ${result.reason?.message||'שגיאה'}`);return;}
+          const page=result.value;
+          mergeUnique(allGames,page.items);
+          if(store==='steam'){totalGames=Number.isFinite(page.total)?page.total:null;nextStart=page.items.length;}
+          else {epicTotal=Number.isFinite(page.total)?page.total:null;epicPage=2;}
+        });
+        if(!allGames.length)throw new Error(failures.join(' | ')||'לא נמצאו משחקים. נסה חיפוש אחר.');
+        render();
+        setStatus(`נטענו ${allGames.length} משחקים · ${stores.join(' + ')} · ${new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})}${failures.length?' · חלק מהחנויות לא נטענו: '+failures.join('; '):''}`,failures.length?'error':'live');
+      }catch(error){if(version!==requestVersion)return;$('dealsGrid').innerHTML=`<div class="message"><strong>לא הצלחתי לטעון משחקים.</strong><br>${escapeHtml(error.message)}<br><br>בדוק את החיבור ונסה שוב.</div>`;setStatus('טעינת קטלוג נכשלה — אפשר לנסות שוב','error');}
+      finally{if(version===requestVersion){isLoading=false;updateLoadMore();}}
+    }
+    async function loadMore() {
+      if(isLoading||storesFinished())return;
+      const version=requestVersion;const stores=activeStores();isLoading=true;updateLoadMore();
+      try{
+        const tasks=[];
+        for(const store of stores){
+          if(isStoreFinished(store))continue;
+          if(store==='steam')tasks.push(getGamesPage($('country').value,activeQuery,nextStart).then(page=>({store,page})));
+          else tasks.push(fetchEpicPage($('country').value,activeQuery,epicPage).then(page=>({store,page})));
+        }
+        const settled=await Promise.allSettled(tasks);
+        if(version!==requestVersion)return;
+        const errors=[];
+        for(const result of settled){
+          if(result.status==='rejected'){errors.push(result.reason?.message||'שגיאה');continue;}
+          const {store,page}=result.value;mergeUnique(allGames,page.items);
+          if(store==='steam'){if(Number.isFinite(page.total))totalGames=page.total;nextStart+=page.items.length;if(!page.items.length&&totalGames===null)totalGames=nextStart;}
+          else {if(Number.isFinite(page.total))epicTotal=page.total;epicPage++;if(!page.items.length&&epicTotal===null)epicTotal=(epicPage-1)*PAGE_SIZE;}
+        }
+        render();setStatus(errors.length?`חלק מהעמודים לא נטענו: ${errors.join('; ')}`:`נטענו ${allGames.length.toLocaleString('he-IL')} משחקים` ,errors.length?'error':'live');
+      }catch(error){setStatus(`לא ניתן לטעון עמוד נוסף: ${error.message}`,'error');}
+      finally{if(version===requestVersion){isLoading=false;updateLoadMore();}}
+    }
+    async function refreshFirstPage() {
+      if(isLoading||!allGames.length)return;
+      const version=requestVersion;const stores=activeStores();
+      try{
+        const settled=await Promise.allSettled(stores.map(store=>store==='steam'?getGamesPage($('country').value,activeQuery,0):fetchEpicPage($('country').value,activeQuery,1)));
+        if(version!==requestVersion)return;
+        let refreshed=[];
+        settled.forEach((r,i)=>{if(r.status!=='fulfilled')return;const store=stores[i];refreshed.push(...r.value.items);if(store==='steam'){nextStart=r.value.items.length;if(Number.isFinite(r.value.total))totalGames=r.value.total;}else{epicPage=2;if(Number.isFinite(r.value.total))epicTotal=r.value.total;}});
+        if(refreshed.length){const freshKeys=new Set(refreshed.map(g=>`${g.store}:${g.id}`));const later=allGames.filter(g=>!freshKeys.has(`${g.store}:${g.id}`));allGames=[...refreshed,...later];render();}
+        setStatus(`נתוני העמוד הראשון עודכנו · ${new Date().toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'})}`,'live');
+      }catch(error){setStatus('רענון נכשל; הנתונים הקודמים נשארו מוצגים','error');}
+    }
+    function unfoldIcs(text){return String(text||'').replace(/\r?\n[ \t]/g,'').split(/\r?\n/);}
+    function parseIcsDate(lineValue){
+      if(!lineValue) return null;
+      const value=lineValue.trim();
+      if(/^\d{8}$/.test(value)) return new Date(Date.UTC(+value.slice(0,4),+value.slice(4,6)-1,+value.slice(6,8)));
+      if(/^\d{8}T\d{6}Z$/.test(value)) return new Date(`${value.slice(0,4)}-${value.slice(4,6)}-${value.slice(6,8)}T${value.slice(9,11)}:${value.slice(11,13)}:${value.slice(13,15)}Z`);
+      if(/^\d{8}T\d{6}$/.test(value)) return new Date(+value.slice(0,4),+value.slice(4,6)-1,+value.slice(6,8),+value.slice(9,11),+value.slice(11,13),+value.slice(13,15));
+      const parsed=new Date(value);return Number.isNaN(parsed.valueOf())?null:parsed;
+    }
+    function parseSalesIcs(ics){
+      const lines=unfoldIcs(ics);const blocks=String(ics).split(/BEGIN:VEVENT/i).slice(1);const events=[];const now=new Date();
+      for(const block of blocks){
+        const eventLines=unfoldIcs(block.split(/END:VEVENT/i)[0]);
+        const get=(key)=>{const line=eventLines.find(x=>x.toUpperCase().startsWith(key.toUpperCase()));return line?line.slice(line.indexOf(':')+1).trim():'';};
+        const summary=get('SUMMARY:').replace(/\\[nN]/g,' ').replace(/\\,/g,',').replace(/\\;/g,';').replace(/\\\\/g,'\\');
+        if(!summary||!/(sale|savings|holiday|black friday|mega|cyber monday)/i.test(summary)) continue;
+        const startLine=eventLines.find(x=>/^DTSTART/i.test(x))||'';const endLine=eventLines.find(x=>/^DTEND/i.test(x))||'';
+        const start=parseIcsDate(startLine.slice(startLine.indexOf(':')+1));let end=parseIcsDate(endLine.slice(endLine.indexOf(':')+1));
+        if(!start||!end||end<now) continue;
+        // All-day iCalendar DTEND is exclusive; convert it to the last sale day.
+        if(/VALUE=DATE/i.test(endLine)) end=new Date(end.getTime()-86400000);
+        const store=/steam/i.test(summary)?'steam':/epic/i.test(summary)?'epic':'both';
+        events.push({name:summary,start,end,store,source:'calendar'});
+      }
+      return events.sort((a,b)=>a.start-b.start);
+    }
+    function epicWeeklyUpdate(){
+      const now=new Date();const days=(2-now.getDay()+7)%7||7;const start=new Date(now);start.setDate(now.getDate()+days);start.setHours(0,0,0,0);
+      const end=new Date(start);end.setDate(end.getDate()+6);
+      return {name:'Epic Games · Deals of the Week (עדכון שבועי)',start,end,store:'epic',weekly:true,inferred:true};
+    }
+    function renderEventCalendar(events) {
+      const weekly=epicWeeklyUpdate();
+      const grid=$('eventGrid');
+      if(!events.length){grid.innerHTML=`<article class="event-card"><div class="event-name">Epic Games · Deals of the Week</div><div class="event-date">העדכון השבועי הבא צפוי ב-${formatDate(weekly.start)}. Epic מפרסמת מבצעים חדשים בימי שלישי; אין הבטחה שכל משחק ייכלל.</div><a href="https://store.epicgames.com/sales-and-specials" target="_blank" rel="noopener noreferrer">בדיקת המבצעים ↗</a></article><article class="event-card"><div class="event-name">Steam</div><div class="event-date">לא התקבל כרגע לוח אירועים עתידי. אפשר לבדוק עדכונים בעמוד האירועים הרשמי של Steam.</div><a href="https://partner.steamgames.com/doc/marketing/upcoming_events" target="_blank" rel="noopener noreferrer">לוח האירועים הרשמי ↗</a></article>`;}
+      else {
+        const display=[...events,weekly].sort((a,b)=>a.start-b.start);const nextByStore={};
+        for(const e of display){if(!nextByStore[e.store]||e.start<nextByStore[e.store].start)nextByStore[e.store]=e;}
+        grid.innerHTML=display.map(event=>{
+          const isNext=nextByStore[event.store]===event;
+          const dateText=event.start&&event.end?`${formatDate(event.start)} – ${formatDate(event.end)}`:event.start?formatDate(event.start):'התאריך טרם פורסם';
+          const days=event.start?Math.max(0,Math.ceil((event.start-new Date())/86400000)):null;
+          const countdown=isNext&&days!==null?(days===0?'מתחיל היום':`בעוד ${days} ימים`):'';
+          const storeLabel=event.store==='steam'?'Steam':event.store==='epic'?'Epic Games':'חנויות';
+          const sourceLabel=event.weekly?'עדכון שבועי':event.source==='calendar'?'לוח מבצעים חיצוני':'לוח חנות';
+          return `<article class="event-card ${isNext?'next':''}"><div class="event-name">${escapeHtml(event.name)}</div><div class="event-date">${escapeHtml(dateText)}</div><div class="event-countdown">${escapeHtml(storeLabel)} · ${escapeHtml(sourceLabel)} ${countdown?'· '+escapeHtml(countdown):''}</div></article>`;
+        }).join('');
+      }
+    }
+    async function loadEventCalendar() {
+      const jobs=[
+        fetchTextThroughProxy(`https://savespawn.com/sales.ics?_=${Date.now()}`,value=>/BEGIN:VCALENDAR/i.test(value)).then(parseSalesIcs),
+        fetchTextThroughProxy(`${STEAM_EVENTS}&_=${Date.now()}`,value=>/Upcoming Events|Seasonal Sales/i.test(value)).then(html=>{
+          const doc=new DOMParser().parseFromString(html,'text/html');
+          const text=(doc.body?.innerText||doc.body?.textContent||'').replace(/\s+/g,' ');
+          const regex=/(Spring|Summer|Autumn|Winter) Sale\s+(20\d{2})\s*\|\s*([A-Z][a-z]+\s+\d{1,2},\s+20\d{2})\s*[–—-]\s*([A-Z][a-z]+\s+\d{1,2},\s+20\d{2}|TBD)/gi;
+          const out=[];let match;
+          while((match=regex.exec(text))!==null){const start=new Date(match[3]);const end=match[4].toUpperCase()==='TBD'?null:new Date(match[4]);if(!Number.isNaN(start.valueOf())&&start>new Date()&&(!end||!Number.isNaN(end.valueOf())))out.push({name:`${match[1]} Sale ${match[2]}`,start,end,store:'steam',source:'official'});}
+          return out;
+        })
+      ];
+      const results=await Promise.allSettled(jobs);let events=[];
+      for(const result of results)if(result.status==='fulfilled')events.push(...result.value);
+      const seen=new Set();events=events.filter(e=>{const k=`${e.store}:${e.name}:${e.start?.toISOString()}`;if(seen.has(k))return false;seen.add(k);return true;}).filter(e=>e.start>new Date()).sort((a,b)=>a.start-b.start);
+      if(!events.length) console.warn('External and official sale calendars were unavailable; using weekly Epic schedule only.');
+      renderEventCalendar(events);
+    }
+    function setAutoRefresh(){if(timer)clearInterval(timer);timer=setInterval(refreshFirstPage,Number($('refreshRate').value||10)*60*1000);}
+    $('refreshBtn').addEventListener('click',()=>loadInitial(true));
+    $('storeSelect').addEventListener('change',()=>loadInitial(true));
+    $('loadMoreBtn').addEventListener('click',loadMore);
+    $('country').addEventListener('change',()=>loadInitial(true));
+    $('searchInput').addEventListener('input',()=>{clearTimeout(searchDebounce);searchDebounce=setTimeout(()=>loadInitial(true),550);});
+    $('minDiscount').addEventListener('change',()=>{quickDiscount=0;render();});
+    $('sortBy').addEventListener('change',render);
+    $('refreshRate').addEventListener('change',setAutoRefresh);
+    document.querySelectorAll('.chip').forEach(button=>button.addEventListener('click',()=>{
+      document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+      button.classList.add('active'); activeFilter=button.dataset.filter; render();
+    }));
+    setAutoRefresh();
+    loadInitial(true);
+    loadEventCalendar();
+    setInterval(loadEventCalendar,6*60*60*1000);
+  </script>
+</body>
+</html>
